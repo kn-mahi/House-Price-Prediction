@@ -217,12 +217,48 @@ plt.title("Correlation Heatmap")
 plt.tight_layout()
 plt.show()
 
-#-----------------------------catagorical to numerical conversion---------------------------------
-#11. Remove Id column
+#------------------------Feature Engineering-----------------------
+# 1. Create Total Area
+data["TotalSF"] = (
+    data["TotalBsmtSF"] +
+    data["1stFlrSF"] +
+    data["2ndFlrSF"]
+)
+
+# 2. Create Total Bathrooms
+data["TotalBathrooms"] = (
+    data["FullBath"] +
+    0.5 * data["HalfBath"] +
+    data["BsmtFullBath"] +
+    0.5 * data["BsmtHalfBath"]
+)
+
+# 3. Create Total Porch Area
+data["TotalPorchSF"] = (
+    data["OpenPorchSF"] +
+    data["3SsnPorch"] +
+    data["EnclosedPorch"] +
+    data["ScreenPorch"] +
+    data["WoodDeckSF"]
+)
+
+# 4. Create House Age
+data["HouseAge"] = data["YrSold"] - data["YearBuilt"]
+
+# Check the new features
+print(data[[
+    "TotalSF",
+    "TotalBathrooms",
+    "TotalPorchSF",
+    "HouseAge"
+]].head())
+
+#-----------------------------categorical to numerical conversion---------------------------------
+# Remove Id column
 data = data.drop("Id", axis=1)
 print(data.shape)
 
-# 12. Find numerical and categorical columns
+# Find numerical and categorical columns
 numerical_columns = data.select_dtypes(include="number").columns
 categorical_columns = data.select_dtypes(include="object").columns
 print("Numerical columns:")
@@ -230,15 +266,14 @@ print(numerical_columns)   #37
 print("\nCategorical columns:")
 print(categorical_columns)  #43
 
-# 13. Convert categorical columns into numbers(ONE-hot Encoding)
+# Convert categorical columns into numbers(ONE-hot Encoding)
 data = pd.get_dummies(data, columns=categorical_columns)
 print(data.shape)
 
-# 14. Separate features and target
+# Separate features and target
 X = data.drop("SalePrice", axis=1)
 y = data["SalePrice"]
 print("Features shape:", X.shape)
 print("Target shape:", y.shape)
 
-#------------------------Feature Engineering-----------------------
 
