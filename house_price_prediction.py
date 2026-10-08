@@ -3,7 +3,7 @@ import pandas as pd  #use pandas
 #---------------------------Dataset Load-------------------------------
 data = pd.read_csv("data/train.csv")  #Read the train dataset in python
 
-#-------------------------------Basic Check------------------------------
+#--------------------------Basic Check------------------------------
 print(data.head()) #Show first 5 rows
 print(data.shape) #Size(row-column)
 print(data.columns) #Show column names
@@ -43,6 +43,15 @@ most_common = data["Electrical"].mode()[0]
 data["Electrical"] = data["Electrical"].fillna(most_common)
 
 # Check final missing values
+print(data.isnull().sum()[data.isnull().sum() > 0])
+
+# Fill remaining numerical missing values with median
+numerical_columns = data.select_dtypes(include="number").columns
+
+for column in numerical_columns:
+    data[column] = data[column].fillna(data[column].median())
+
+# Check again
 print(data.isnull().sum()[data.isnull().sum() > 0])
 
 #---------------------------------------------EDA---------------------------------------
@@ -270,10 +279,15 @@ print(categorical_columns)  #43
 data = pd.get_dummies(data, columns=categorical_columns)
 print(data.shape)
 
-# Separate features and target
+# separate features and target
 X = data.drop("SalePrice", axis=1)
 y = data["SalePrice"]
 print("Features shape:", X.shape)
 print("Target shape:", y.shape)
 
 
+#------------------------Prepare Test Data-----------------------
+
+# Load test dataset
+test_data = pd.read_csv("data/test.csv")
+print("Test data shape:", test_data.shape)
