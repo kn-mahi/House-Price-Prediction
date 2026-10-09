@@ -291,3 +291,51 @@ print("Target shape:", y.shape)
 # Load test dataset
 test_data = pd.read_csv("data/test.csv")
 print("Test data shape:", test_data.shape)
+
+#------------------------Missing value analysis in test data------------------------
+# Check missing values in test data
+print(test_data.isnull().sum()[test_data.isnull().sum() > 0])
+
+
+#--------------------Fill Missing Values in Test Data--------------------
+# Fill missing values in test data
+test_data["LotFrontage"] = test_data["LotFrontage"].fillna(data["LotFrontage"].median())
+test_data["MasVnrArea"] = test_data["MasVnrArea"].fillna(data["MasVnrArea"].median())
+test_data["GarageYrBlt"] = test_data["GarageYrBlt"].fillna(data["GarageYrBlt"].median())
+
+# Fill categorical missing values with "None"
+test_data["Alley"] = test_data["Alley"].fillna("None")
+test_data["MasVnrType"] = test_data["MasVnrType"].fillna("None")
+test_data["BsmtQual"] = test_data["BsmtQual"].fillna("None")
+test_data["BsmtCond"] = test_data["BsmtCond"].fillna("None")
+test_data["BsmtExposure"] = test_data["BsmtExposure"].fillna("None")
+test_data["BsmtFinType1"] = test_data["BsmtFinType1"].fillna("None")
+test_data["BsmtFinType2"] = test_data["BsmtFinType2"].fillna("None")
+test_data["FireplaceQu"] = test_data["FireplaceQu"].fillna("None")
+test_data["GarageType"] = test_data["GarageType"].fillna("None")
+test_data["GarageFinish"] = test_data["GarageFinish"].fillna("None")
+test_data["GarageQual"] = test_data["GarageQual"].fillna("None")
+test_data["GarageCond"] = test_data["GarageCond"].fillna("None")
+test_data["PoolQC"] = test_data["PoolQC"].fillna("None")
+test_data["Fence"] = test_data["Fence"].fillna("None")
+test_data["MiscFeature"] = test_data["MiscFeature"].fillna("None")
+
+# Fill remaining missing values with the most common value
+test_data = test_data.fillna(data.mode().iloc[0])
+
+# Check remaining missing values
+print(test_data.isnull().sum()[test_data.isnull().sum() > 0])
+
+# Fill remaining missing values
+test_data["MSZoning"] = test_data["MSZoning"].fillna(test_data["MSZoning"].mode()[0])
+test_data["Utilities"] = test_data["Utilities"].fillna(test_data["Utilities"].mode()[0])
+test_data["Exterior1st"] = test_data["Exterior1st"].fillna(test_data["Exterior1st"].mode()[0])
+test_data["Exterior2nd"] = test_data["Exterior2nd"].fillna(test_data["Exterior2nd"].mode()[0])
+test_data["KitchenQual"] = test_data["KitchenQual"].fillna(test_data["KitchenQual"].mode()[0])
+test_data["Functional"] = test_data["Functional"].fillna(test_data["Functional"].mode()[0])
+test_data["SaleType"] = test_data["SaleType"].fillna(test_data["SaleType"].mode()[0])
+
+# Check missing values
+print(test_data.isnull().sum()[test_data.isnull().sum() > 0])
+
+
