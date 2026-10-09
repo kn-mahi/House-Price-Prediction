@@ -1,8 +1,11 @@
 import pandas as pd  #use pandas
 
+# STEP: 1
 #---------------------------Dataset Load-------------------------------
 data = pd.read_csv("data/train.csv")  #Read the train dataset in python
 
+
+#STEP: 2
 #--------------------------Basic Check------------------------------
 print(data.head()) #Show first 5 rows
 print(data.shape) #Size(row-column)
@@ -11,7 +14,8 @@ data.info() #column data type and missing value info
 print(data.describe()) # Show avg,max,min,sd
 
 
-#-----------------------------missing value analysis--------------------------------
+#STEP: 3
+#-----------------------------missing value analysis of test data--------------------------------
 print(data.isnull().sum()[data.isnull().sum() > 0]) #show missing value column only
 
 # Fill missing value in LotFrontage
@@ -54,6 +58,8 @@ for column in numerical_columns:
 # Check again
 print(data.isnull().sum()[data.isnull().sum() > 0])
 
+
+#STEP: 4
 #---------------------------------------------EDA---------------------------------------
 import matplotlib.pyplot as plt
 
@@ -226,6 +232,8 @@ plt.title("Correlation Heatmap")
 plt.tight_layout()
 plt.show()
 
+
+#STEP: 5
 #------------------------Feature Engineering-----------------------
 # 1. Create Total Area
 data["TotalSF"] = (
@@ -286,6 +294,7 @@ print("Features shape:", X.shape)
 print("Target shape:", y.shape)
 
 
+#STEP: 6
 #------------------------Prepare Test Data-----------------------
 
 # Load test dataset
